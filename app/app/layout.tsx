@@ -58,8 +58,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   //
   // A consulta só roda neste ramo, que é o raro: quem tem organização não paga
   // nada por ela.
-  if (!activeOrg && !user.support && (await acessoFoiRevogado(user.id))) {
-    redirect("/acesso-revogado");
+  if (!activeOrg && !user.support) {
+    if (await acessoFoiRevogado(user.id)) redirect("/acesso-revogado");
+    if (!user.is_platform_admin) redirect("/get-started");
   }
 
   /**
